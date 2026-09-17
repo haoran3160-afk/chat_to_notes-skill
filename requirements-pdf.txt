@@ -1,4 +1,4 @@
 # HTML assembly uses only Python's standard library.
 # These dependencies are needed for browser-based PDF export and verification.
 PyMuPDF>=1.26,<2
-websocket-client>=1.8,<2
+websocket-client>=1.9.2,<2

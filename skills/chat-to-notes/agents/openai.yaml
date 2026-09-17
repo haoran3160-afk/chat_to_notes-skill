@@ -1,0 +1,4 @@
+interface:
+  display_name: "对话转笔记"
+  short_description: "支持 Codex、ChatGPT 及其他聊天记录，先选六种风格之一，再固定生成 HTML 与 PDF"
+  default_prompt: "使用 $chat-to-notes，将当前或指定的聊天记录整理成笔记，附件可选；先让我选择六种风格之一，交付无附录固定风格 HTML，确认后按同一风格导出 PDF。"

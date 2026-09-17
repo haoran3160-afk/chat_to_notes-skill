@@ -1,0 +1,8 @@
+{
+  "cornell": {"label": "康奈尔线索笔记", "required_classes": ["note-unit", "cue", "note-main"]},
+  "outline": {"label": "层级大纲笔记", "required_classes": ["outline-unit"]},
+  "annotated": {"label": "例题与旁批", "required_classes": ["annotated-example", "example-steps", "margin-note"]},
+  "sketch": {"label": "图解手写笔记", "required_classes": ["visual-explanation"]},
+  "handwritten": {"label": "经典手写风", "required_classes": []},
+  "electronic": {"label": "规范风", "required_classes": []}
+}

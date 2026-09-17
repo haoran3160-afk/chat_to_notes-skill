@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Usage and FAQ / 使用与常见问题
+    url: https://github.com/haoran3160-afk/chat_to_notes-skill/blob/main/docs/faq.md
+    about: Read supported inputs, style selection and known limitations first.

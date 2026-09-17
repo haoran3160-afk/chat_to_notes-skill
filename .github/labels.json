@@ -1,0 +1,9 @@
+[
+  {"name":"area: sources","color":"0052CC","description":"Conversation reading, attachments, provenance and truncation"},
+  {"name":"area: content","color":"5319E7","description":"Explanation depth, coverage, examples and retrieval practice"},
+  {"name":"area: styles","color":"D876E3","description":"Fixed styles, typography and responsive HTML layout"},
+  {"name":"area: math","color":"006B75","description":"MathML, notation, derivations and mathematical figures"},
+  {"name":"area: pdf","color":"B60205","description":"Printing, pagination, PDF links and bookmarks"},
+  {"name":"area: testing","color":"0E8A16","description":"Regression tests, CI and reproducible validation"},
+  {"name":"needs-reproduction","color":"FBCA04","description":"A synthetic or redacted minimal reproduction is needed"}
+]

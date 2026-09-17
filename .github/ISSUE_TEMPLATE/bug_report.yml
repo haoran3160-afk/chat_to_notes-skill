@@ -1,0 +1,38 @@
+name: Bug report / 问题反馈
+description: Report a reproducible reading, rendering or export problem.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Please use synthetic or redacted examples. Do not share private chats, slides, credentials or font files.
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior / 预期与实际表现
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction / 最小复现
+      description: Include the command or prompt and a small synthetic input.
+    validations:
+      required: true
+  - type: dropdown
+    id: style
+    attributes:
+      label: Selected style / 风格
+      options: [cornell, outline, annotated, sketch, handwritten, electronic, "Not applicable"]
+  - type: input
+    id: environment
+    attributes:
+      label: OS, Python and browser versions / 运行环境
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy / 隐私
+      options:
+        - label: I removed private conversations, attachments, account details and credentials.
+          required: true

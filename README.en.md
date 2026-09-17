@@ -9,7 +9,9 @@
 
 This repository contains a Codex Skill, HTML templates, and local Python helpers. It supports mathematical derivations, worked code examples, study material, and technical discussions. Slides are optional. It adds no browser extension, backend service, or separate model API; authoring still uses the model and quota of the host agent.
 
-![Six note styles rendered from the same synthetic example using the actual Skill templates](docs/images/styles-overview.png)
+![Six body excerpts showing recall cues, nested outlines, step annotations, visual proof, calligraphic prose, and formal evidence tables](docs/images/styles-overview.png)
+
+The overview focuses on characteristic body excerpts and omits shared headers and navigation. All six explain the same synthetic math problem through different reading structures. Click a style below for its full-page screenshot.
 
 ## Install and use
 
@@ -36,12 +38,12 @@ See [Usage](docs/usage.md) for manual installation, dependencies, CLI commands, 
 
 | Style | ID | Intended use |
 |---|---|---|
-| Cornell cues | `cornell` | Recall prompts beside full explanations |
-| Hierarchical outline | `outline` | Concepts and reasoning dependencies |
-| Annotated worked examples | `annotated` | Executable steps alongside their justification |
-| Visual handwritten | `sketch` | Diagrams and nearby explanations on graph paper |
-| Classic handwritten | `handwritten` | Calligraphic font, warm paper, continuous reading |
-| Formal digital | `electronic` | Sans-serif type, white paper, clear hierarchy |
+| [Cornell cues](docs/images/cornell.png) | `cornell` | Three recall prompts aligned with explanations and a summary |
+| [Hierarchical outline](docs/images/outline.png) | `outline` | Nested and numbered prerequisites, steps, and proof evidence |
+| [Annotated worked examples](docs/images/annotated.png) | `annotated` | Each solution step aligned with its conditions and justification |
+| [Visual handwritten](docs/images/sketch.png) | `sketch` | A graph connected to the proof path on graph paper |
+| [Classic handwritten](docs/images/handwritten.png) | `handwritten` | Calligraphic prose, dotted warm paper, highlighted reasoning |
+| [Formal digital](docs/images/electronic.png) | `electronic` | Sans-serif type, white paper, and an evidence/comparison table |
 
 The style is selected before authoring and stays fixed from HTML to PDF. Changing it creates a new document for review. There is no runtime theme switch. Local fonts affect appearance; typography is not pixel-identical across operating systems.
 

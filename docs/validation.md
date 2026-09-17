@@ -18,6 +18,12 @@ Tests run locally and through the [Checks workflow](https://github.com/haoran316
 
 The CI matrix includes Python 3.10/3.12 on Windows and Ubuntu for renderer checks, plus an Ubuntu browser/PDF job. An environment listed in a workflow is not a passing result until its run succeeds.
 
+## Style showcase update
+
+The public example now uses each style's intended structure: aligned recall rows, nested reasoning, per-step annotations, a graph linked to a proof path, continuous handwritten explanation, or a formal evidence table. The mathematical task and conclusion stay the same.
+
+README thumbnails are labeled body excerpts cropped from the actual rendered HTML; full screenshots remain available. Cropping removes shared navigation rather than injecting alternate presentation CSS. The same renderer and browser/PDF suites also cover these richer examples.
+
 ## What is not proved
 
 - That a model's explanation is complete or mathematically correct.

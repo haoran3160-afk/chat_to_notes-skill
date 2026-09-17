@@ -9,7 +9,9 @@
 
 这是一个 Codex Skill，包含整理规则、HTML 模板和本地 Python 工具。适用于学习笔记、数学推导、代码例题与技术讨论；课件可选。无需浏览器扩展、后端服务或额外模型 API。内容整理使用运行 Skill 的模型，仍会消耗该环境的模型额度。
 
-![六种笔记风格，使用同一份公开合成数学材料，由实际 Skill 模板渲染](docs/images/styles-overview.png)
+![六种风格的正文特写：康奈尔回忆栏、分层大纲、逐步旁批、图形证明、经典手写与规范表格](docs/images/styles-overview.png)
+
+总览截取最能体现各风格特点的正文区域，省略共同的页头和目录。六种示例围绕同一道合成数学题组织；[下表中的风格名称](#六种风格)链接到完整页面截图。
 
 ## 为什么使用它
 
@@ -50,12 +52,12 @@
 
 | 风格 | 稳定 ID | 适用方式 |
 |---|---|---|
-| [康奈尔线索](docs/images/cornell.png) | `cornell` | 左栏回忆问题，右栏完整讲解 |
-| [层级大纲](docs/images/outline.png) | `outline` | 按概念和推理依赖分层 |
-| [例题与旁批](docs/images/annotated.png) | `annotated` | 完整例题配关键步骤依据 |
-| [图解手写](docs/images/sketch.png) | `sketch` | 方格纸、图文邻近、关系可视化 |
-| [经典手写](docs/images/handwritten.png) | `handwritten` | 楷体、浅色纸张、通栏讲解 |
-| [规范风](docs/images/electronic.png) | `electronic` | 规范字体、白底、清晰层级 |
+| [康奈尔线索](docs/images/cornell.png) | `cornell` | 三组回忆问题与讲解逐行对应，页底收束证明线索 |
+| [层级大纲](docs/images/outline.png) | `outline` | 从问题到候选再到全局证据，以编号和嵌套层级展开 |
+| [例题与旁批](docs/images/annotated.png) | `annotated` | 每步解题与旁侧的条件、理由一一对应 |
+| [图解手写](docs/images/sketch.png) | `sketch` | 曲线直接连到证明关系，配方格纸与手写强调 |
+| [经典手写](docs/images/handwritten.png) | `handwritten` | 楷体、暖色点阵纸、重点划线与连续讲解 |
+| [规范风](docs/images/electronic.png) | `electronic` | 白底无衬线字体，按“事项—依据—结论”核对证据 |
 
 新文档先选择风格；已指定或继续同一份文档时不重复询问。HTML 没有风格切换按钮。换风格生成新版本，PDF 不临时改风格。字体依赖本地环境，楷体不可用时会回退；不同机器不保证像素完全一致。
 

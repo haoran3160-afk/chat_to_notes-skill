@@ -1,4 +1,4 @@
-"""Capture actual Skill HTML without replacing its typography or layout CSS."""
+"""Capture full Skill pages and characteristic body excerpts without CSS overrides."""
 import argparse
 import base64
 from pathlib import Path
@@ -34,15 +34,41 @@ with tempfile.TemporaryDirectory(prefix='notes-previews-') as temporary:
             browser.evaluate('(async()=>{await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));})()')
             data = browser.call('Page.captureScreenshot', {'format':'png','captureBeyondViewport':True})['data']
             (args.output_dir / (style + '.png')).write_bytes(base64.b64decode(data))
+            # Show the style-specific explanation, not identical page furniture.
+            # The visual style includes its diagram; the other excerpts end
+            # before their shared geometric cross-check. Full pages remain linked.
+            clip = browser.evaluate('''(()=>{
+                const sheet=document.querySelector('.sheet').getBoundingClientRect();
+                const article=document.querySelector('article').getBoundingClientRect();
+                const stop=document.getElementById(document.documentElement.dataset.style==='sketch'?'practice-review':'geometry').getBoundingClientRect();
+                const top=article.top+scrollY-12;
+                return {x:sheet.left+38,y:top,width:sheet.width-76,height:stop.top+scrollY-top-12,scale:1};
+            })()''')
+            if clip['height'] <= 0:
+                raise RuntimeError('Missing or reversed showcase bounds for ' + style)
+            data = browser.call('Page.captureScreenshot', {'format':'png','captureBeyondViewport':True,'clip':clip})['data']
+            (args.output_dir / (style + '-detail.png')).write_bytes(base64.b64decode(data))
 
-sheet = Image.new('RGB', (1500, 1800), '#e9edf0')
+captions = {
+    'cornell': ('CORNELL CUES', 'Recall questions / Full explanations / Summary'),
+    'outline': ('HIERARCHICAL OUTLINE', 'Nested logic / Numbered steps / Explicit conditions'),
+    'annotated': ('ANNOTATED EXAMPLE', 'Solution on the left / Reasons on the right'),
+    'sketch': ('VISUAL HANDWRITTEN', 'Graph / Proof path / Handwritten emphasis'),
+    'handwritten': ('CLASSIC HANDWRITTEN', 'Calligraphy / Warm dotted paper / Continuous prose'),
+    'electronic': ('FORMAL DIGITAL', 'Sans-serif type / Evidence table / White paper'),
+}
+sheet = Image.new('RGB', (1800, 2460), '#e9edf0')
 draw = ImageDraw.Draw(sheet)
-font = ImageFont.load_default(size=20)
+font = ImageFont.load_default(size=30)
+small = ImageFont.load_default(size=19)
 for i, style in enumerate(STYLES):
-    picture = Image.open(args.output_dir / (style + '.png'))
-    picture.thumbnail((470, 835))
-    x, y = (i % 3) * 500 + 15, (i // 3) * 900 + 50
-    sheet.paste(picture, (x + (470 - picture.width)//2, y))
-    draw.text((x, y - 35), f'{i+1:02}  {style}', font=font, fill='#243044')
+    picture = Image.open(args.output_dir / (style + '-detail.png'))
+    picture.thumbnail((844, 685))
+    x, y = (i % 2) * 900 + 28, (i // 2) * 820 + 108
+    draw.rectangle((x,y,x+844,y+685),fill='#ffffff')
+    sheet.paste(picture, (x + (844 - picture.width)//2, y))
+    heading,description=captions[style]
+    draw.text((x, y - 84), f'{i+1:02}  {heading}', font=font, fill='#243044')
+    draw.text((x, y - 42), description, font=small, fill='#526578')
 sheet.save(args.output_dir / 'styles-overview.png')
 print(args.output_dir.resolve())

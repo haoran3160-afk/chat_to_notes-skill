@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Documentation previews
+
+- Make the six style examples demonstrate distinct reading structures around the same mathematical problem.
+- Replace tiny full-document thumbnails with labeled body excerpts; retain links to complete screenshots and reproducible capture commands.
+
 ### Initial public repository
 
 - Import the existing chat-to-notes Skill with six generation-time styles and fixed-style HTML/PDF output.

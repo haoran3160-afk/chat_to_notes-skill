@@ -107,7 +107,7 @@ With the PDF environment installed, render screenshots of those documents:
 python examples/capture_previews.py --html-dir outputs/demo --output-dir outputs/previews
 ```
 
-This also requires Pillow (`python -m pip install Pillow`) for the contact sheet. Pillow is a preview-development dependency, not part of note authoring or PDF export. Preview filenames match the stable style IDs. The sample images in `docs/images/` are checked-in documentation assets; generated notes and PDFs stay ignored.
+This also requires Pillow (`python -m pip install Pillow`) for the contact sheet. Pillow is a preview-development dependency, not part of note authoring or PDF export. `<style>.png` is a complete page; `<style>-detail.png` is the characteristic body excerpt. The two-column overview combines those excerpts with reading-method captions, omitting shared page headers and navigation. No preview-only typography or theme CSS is injected. The sample images in `docs/images/` are checked-in documentation assets; generated notes and PDFs stay ignored.
 
 ## Checks
 

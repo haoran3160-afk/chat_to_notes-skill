@@ -11,7 +11,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = ROOT / 'skills/chat-to-notes/scripts'
 sys.path.insert(0, str(SCRIPTS))
-from artifact_contract import STYLES, inspect_html, manifest_from
+from artifact_contract import STYLES, inspect_author_html, inspect_html, manifest_from
 
 spec = importlib.util.spec_from_file_location('demo', ROOT / 'examples/build_demo.py')
 demo = importlib.util.module_from_spec(spec)
@@ -46,6 +46,12 @@ class RenderTests(unittest.TestCase):
             'remote-image': ('<h2 id="one">One</h2><img src="https://example.invalid/x.png" alt="test">', ['--style','electronic']),
             'missing-cornell-layout': ('<h2 id="one">One</h2>', ['--style','cornell']),
             'unconverted-math': ('<h2 id="one">One</h2><tex>x^2</tex>', ['--style','electronic']),
+            'svg-event': ('<h2 id="one">One</h2><svg onload="document.title=1"></svg>', ['--style','electronic']),
+            'escaped-url': ('<h2 id="one">One</h2><a href="java&#x09;script:alert(1)">Link</a>', ['--style','electronic']),
+            'meta-refresh': ('<h2 id="one">One</h2><meta http-equiv="refresh" content="0;url=data:text/html,bad">', ['--style','electronic']),
+            'svg-animation': ('<h2 id="one">One</h2><svg><set attributeName="href" to="javascript:alert(1)"/></svg>', ['--style','electronic']),
+            'unknown-attribute': ('<h2 id="one" custom-code="bad">One</h2>', ['--style','electronic']),
+            'cdata-hidden-element': ('<h2 id="one">One</h2><![CDATA[><input value="unsupported">]]>', ['--style','electronic']),
         }
         with tempfile.TemporaryDirectory() as temp:
             folder=Path(temp)
@@ -63,6 +69,33 @@ class RenderTests(unittest.TestCase):
         parsed=inspect_html('<math><mi>x</mi></math><svg role="img" aria-label="diagram"></svg>')
         self.assertEqual(parsed.counts['math'],1)
         self.assertEqual(parsed.counts['svg'],1)
+
+    def test_escaped_declaration_examples_remain_static_text(self):
+        parsed = inspect_author_html('<code>&lt;![CDATA[text]]&gt;</code>'
+                                     '<svg><text>&lt;tag&gt;</text></svg>')
+        self.assertEqual(parsed.counts['svg'], 1)
+
+    def test_export_rejects_active_content_even_with_matching_approval_hash(self):
+        with tempfile.TemporaryDirectory() as temp:
+            folder = Path(temp)
+            original = demo.render('electronic', folder).read_text(encoding='utf-8')
+            for name, payload in {
+                'event': '<p onmouseenter="document.title=1">Text</p>',
+                'script': '<script>document.title=1</script>',
+                'external-script': '<script src="data:text/javascript,document.title=1"></script>',
+                'duplicate-meta': '<meta http-equiv="refresh" http-equiv="content-security-policy" content="0;url=https://example.invalid/">',
+                'cdata-hidden-element': '<![CDATA[><input value="unsupported">]]>',
+            }.items():
+                with self.subTest(name=name):
+                    html = folder / (name + '.html')
+                    html.write_text(original.replace('</article>', payload + '</article>'), encoding='utf-8')
+                    pdf = folder / (name + '.pdf')
+                    result = subprocess.run([sys.executable, str(SCRIPTS/'export_pdf.py'), str(html),
+                        '--output', str(pdf), '--approved-sha256', hashlib.sha256(html.read_bytes()).hexdigest()],
+                        capture_output=True, text=True, encoding='utf-8')
+                    self.assertNotEqual(result.returncode, 0)
+                    self.assertIn('Active content', result.stderr)
+                    self.assertFalse(pdf.exists())
 
 
 if __name__=='__main__': unittest.main()

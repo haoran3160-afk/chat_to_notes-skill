@@ -5,7 +5,7 @@ from html.parser import HTMLParser
 import json
 from pathlib import Path
 import re
-from artifact_contract import STYLES, inspect_html, font_fingerprints, sha
+from artifact_contract import STYLES, inspect_author_html, content_security_policy, font_fingerprints, sha
 
 
 class Structure(HTMLParser):
@@ -78,9 +78,7 @@ def main():
         knowledge_map = args.map_path.read_text(encoding='utf-8')
         template = (Path(__file__).resolve().parents[1]/'assets/notes.html').read_text(encoding='utf-8')
         style_css = (Path(__file__).resolve().parents[1]/'assets/fixed-styles.css').read_text(encoding='utf-8')
-        assets = inspect_html(body+knowledge_map)
-        if '<script' in (body+knowledge_map).lower():
-            raise ValueError('Author content must be static; keep runtime behavior in the reviewed template.')
+        assets = inspect_author_html(body+knowledge_map)
         missing_classes = set(STYLES[args.style]['required_classes']) - assets.classes
         if missing_classes:
             raise ValueError('Author the selected layout before rendering; missing classes: '+str(sorted(missing_classes)))
@@ -93,7 +91,8 @@ def main():
                   'KNOWLEDGE_MAP':knowledge_map,'TOC':toc_for(body),'CONTENT':body,
                   'SOURCE_NOTE':escape(args.source_note),'STYLE':args.style,
                   'STYLE_LABEL':escape(STYLES[args.style]['label']),'STYLE_CSS':style_css,
-                  'MANIFEST':json.dumps(manifest,ensure_ascii=False).replace('<','\\u003c')}
+                  'MANIFEST':json.dumps(manifest,ensure_ascii=False).replace('<','\\u003c'),
+                  'CONTENT_SECURITY_POLICY':escape(content_security_policy(),quote=True)}
         placeholders = set(re.findall(r'{{([A-Z_]+)}}',template))
         if placeholders - values.keys():
             raise ValueError('Unknown template placeholders: '+str(placeholders-values.keys()))

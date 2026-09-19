@@ -8,6 +8,14 @@ The browser suite renders the same synthetic example in all six styles. It check
 
 Tests run locally and through the [Checks workflow](https://github.com/haoran3160-afk/chat_to_notes-skill/actions/workflows/checks.yml). Consult the run for the commit you use; a README badge is not evidence about future changes.
 
+Static-content regressions reject SVG events, encoded executable links, active
+metadata, SVG animation, unknown author attributes and ambiguous duplicate
+attributes. Export preflight rejects active content even with a matching approval
+hash. A real-browser regression deliberately bypasses author validation to verify
+that the generated CSP blocks a before-print paragraph change while the trusted
+answer-expansion script still works; actual PDF text must retain the original
+paragraph. All six styles also preserve article text across print preparation.
+
 ## Evidence at initial publication
 
 - Local execution: Windows, Python 3.12, Chrome 153, PyMuPDF 1.28.0, websocket-client 1.9.0.

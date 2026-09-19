@@ -100,6 +100,11 @@ class Assets(HTMLParser):
         if self.script is not None:
             self.script[1] += data
 
+    def unknown_decl(self, data):
+        # HTMLParser skips CDATA/marked sections, whereas HTML browser parsing
+        # may expose their contents as real elements. Escape literal examples.
+        self.errors.append('Active content or unsupported markup declaration.')
+
     def handle_endtag(self, tag):
         if tag == 'script' and self.script is not None:
             self.scripts.append(self.script)

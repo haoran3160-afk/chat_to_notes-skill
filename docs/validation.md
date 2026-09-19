@@ -15,6 +15,9 @@ hash. A real-browser regression deliberately bypasses author validation to verif
 that the generated CSP blocks a before-print paragraph change while the trusted
 answer-expansion script still works; actual PDF text must retain the original
 paragraph. All six styles also preserve article text across print preparation.
+CDATA/marked sections are rejected too: the Python validator and HTML browser
+must not interpret their contents as different markup. Use escaped text for
+literal examples, including within SVG and MathML.
 
 ## Evidence at initial publication
 

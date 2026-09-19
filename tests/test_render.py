@@ -11,7 +11,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = ROOT / 'skills/chat-to-notes/scripts'
 sys.path.insert(0, str(SCRIPTS))
-from artifact_contract import STYLES, inspect_html, manifest_from
+from artifact_contract import STYLES, inspect_author_html, inspect_html, manifest_from
 
 spec = importlib.util.spec_from_file_location('demo', ROOT / 'examples/build_demo.py')
 demo = importlib.util.module_from_spec(spec)
@@ -51,6 +51,7 @@ class RenderTests(unittest.TestCase):
             'meta-refresh': ('<h2 id="one">One</h2><meta http-equiv="refresh" content="0;url=data:text/html,bad">', ['--style','electronic']),
             'svg-animation': ('<h2 id="one">One</h2><svg><set attributeName="href" to="javascript:alert(1)"/></svg>', ['--style','electronic']),
             'unknown-attribute': ('<h2 id="one" custom-code="bad">One</h2>', ['--style','electronic']),
+            'cdata-hidden-element': ('<h2 id="one">One</h2><![CDATA[><input value="unsupported">]]>', ['--style','electronic']),
         }
         with tempfile.TemporaryDirectory() as temp:
             folder=Path(temp)
@@ -69,6 +70,11 @@ class RenderTests(unittest.TestCase):
         self.assertEqual(parsed.counts['math'],1)
         self.assertEqual(parsed.counts['svg'],1)
 
+    def test_escaped_declaration_examples_remain_static_text(self):
+        parsed = inspect_author_html('<code>&lt;![CDATA[text]]&gt;</code>'
+                                     '<svg><text>&lt;tag&gt;</text></svg>')
+        self.assertEqual(parsed.counts['svg'], 1)
+
     def test_export_rejects_active_content_even_with_matching_approval_hash(self):
         with tempfile.TemporaryDirectory() as temp:
             folder = Path(temp)
@@ -78,6 +84,7 @@ class RenderTests(unittest.TestCase):
                 'script': '<script>document.title=1</script>',
                 'external-script': '<script src="data:text/javascript,document.title=1"></script>',
                 'duplicate-meta': '<meta http-equiv="refresh" http-equiv="content-security-policy" content="0;url=https://example.invalid/">',
+                'cdata-hidden-element': '<![CDATA[><input value="unsupported">]]>',
             }.items():
                 with self.subTest(name=name):
                     html = folder / (name + '.html')

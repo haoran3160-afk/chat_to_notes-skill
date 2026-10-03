@@ -26,7 +26,19 @@
 
 **outline**：h2 为模块，h3 为知识点，相关解释用 `.outline-unit` 分组。按需增加一层列表；推导、代码与例题保留段落和完整步骤，不能只留缩进标题。
 
-**annotated**：真实例题或过程使用 `.annotated-example`，其中 `.example-steps` 放完整执行过程，`.margin-note` 用步骤号关联关键依据。多个复杂步骤可拆成多个这样的块；一般概念仍正常通栏，不为两栏强行造题。
+**annotated**：真实例题、证明或可追踪过程使用多个 `.annotated-example`，其中 `.example-steps` 放一个完整但边界清楚的步骤块，`.margin-note` 只解释该块的依据、条件、易错点或迁移提示。旁批必须和对应步骤在同一视觉块中，不能把整章正文包成一个大左栏，再在最末放一段“怎样读这一章”的通用说明。
+
+每条旁批至少回答一个具体问题：这一步为什么成立、依赖什么条件、结果中的哪个量要检查、删掉条件会怎样，或怎样迁移到变式。优先写 2–4 句，每个旁批只承载一个信息增量；不要重复标题、复述正文结论、描述排版或写“左栏是正文、右栏是提示”。如果一个模块没有可增加的局部依据，就保持通栏，不为了填满侧栏制造注解。
+
+```html
+<div class="annotated-example" id="fit-step-2"><div class="example-steps">
+<p><strong>② 求候选点：</strong>令梯度为零，得到 x=2。</p>
+</div><aside class="margin-note" aria-label="步骤 2 旁批">
+<p><strong>依据：</strong>这是内点可微极值的必要条件；它只定位候选，还不能证明全局最小。</p>
+</aside></div>
+```
+
+旁批可以使用“依据 / 易错 / 边界 / 迁移”短标签，但标签后必须有针对本块的事实或推理。移动端按步骤顺序把旁批堆到对应块之后；打印保持同一对应关系。
 
 ```html
 <div class="annotated-example"><div class="example-steps"><p>① 输入、步骤与结果……</p></div>
